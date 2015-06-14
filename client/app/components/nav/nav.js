@@ -1,7 +1,8 @@
 'use strict';
 
 var React = require('react/addons');
-var $ = require('jquery');
+var api = require('../../utilities/api');
+var logError = require('../../utilities/logError');
 
 var Nav = React.createClass({
   getInitialState: function () {
@@ -13,13 +14,12 @@ var Nav = React.createClass({
   },
   componentDidMount: function () {
     var self = this;
-    $.get('/api/login/getStatus')
-      .then(function (result) {
-        self.setState({
-          isLogin: result.isLogin,
-          user: result.user
-        });
+    api.getStatus().then(function(result) {
+      self.setState({
+        isLogin: result.isLogin,
+        user: result.user
       });
+    }).catch(logError);
   },
   handleToggleMenu: function () {
     this.setState({
